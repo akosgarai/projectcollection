@@ -33,6 +33,7 @@ COPY --from=builder /bin/app .
 
 # Bind the app to 0.0.0.0 so it can be seen from outside the container
 ENV ADDR=0.0.0.0
+ENV GODEBUG=netdns=go
 
 EXPOSE 3000
 

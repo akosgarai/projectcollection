@@ -1,0 +1,40 @@
+version: "3.9"
+
+networks:
+  projectcollection:
+
+services:
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    networks:
+      - projectcollection
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: 'projectcollection_development'
+      POSTGRES_USER: 'projectcollection'
+      POSTGRES_PASSWORD: 'password'
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '5432:5432'
+      # Where our data will be persisted
+    volumes:
+      - pg-db:/var/lib/postgresql/data
+    networks:
+      - projectcollection
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      retries: 3
+      timeout: 5s
+
+
+# Names our volume
+volumes:
+  pg-db:

@@ -1,6 +1,6 @@
 module projectcollection
 
-go 1.21.1
+go 1.18
 
 require (
 	github.com/gobuffalo/buffalo v1.1.0
