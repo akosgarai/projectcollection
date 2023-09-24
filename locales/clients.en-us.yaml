@@ -1,0 +1,6 @@
+- id: "client.created.success"
+  translation: "Client was successfully created."
+- id: "client.updated.success"
+  translation: "Client was successfully updated."
+- id: "client.destroyed.success"
+  translation: "Client was successfully destroyed."

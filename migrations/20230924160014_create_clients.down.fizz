@@ -1,0 +1,2 @@
+drop_table("clients")
+drop_index("clients", "clients_name_idx")
