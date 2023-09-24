@@ -1,0 +1,33 @@
+<div class="py-4 mb-2">
+  <h3 class="d-inline-block">Hosts</h3>
+  <div class="float-end">
+    <%= linkTo(newHostsPath(), {class: "btn btn-primary"}) { %>
+      Create New Host
+    <% } %>
+  </div>
+</div>
+
+<table class="table table-hover table-bordered">
+  <thead class="thead-light">
+    <th>Name</th><th>IP</th><th>Environment</th><th>SSHUser</th><th>SSHPort</th><th>SSHKey</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (host) in hosts { %>
+      <tr>
+        <td class="align-middle"><%= host.Name %></td><td class="align-middle"><%= host.IP %></td><td class="align-middle"><%= host.Environment.Name %></td><td class="align-middle"><%= host.SSHUser %></td><td class="align-middle"><%= host.SSHPort %></td><td class="align-middle"><%= host.SSHKey %></td>
+        <td>
+          <div class="float-end">
+            <%= linkTo(hostPath({ host_id: host.ID }), {class: "btn btn-info", body: "View"}) %>
+            <%= linkTo(editHostPath({ host_id: host.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+            <%= linkTo(hostPath({ host_id: host.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= paginator(pagination) %>
+</div>

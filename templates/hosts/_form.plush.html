@@ -1,0 +1,7 @@
+<%= f.InputTag("Name") %>
+<%= f.InputTag("IP") %>
+<%= f.SelectTag("EnvironmentID", {options: environments, "label": "Environment", value: host.EnvironmentID}) %>
+<%= f.InputTag("SSHUser") %>
+<%= f.InputTag("SSHPort") %>
+<%= f.InputTag("SSHKey") %>
+<button class="btn btn-success" role="submit">Save</button>

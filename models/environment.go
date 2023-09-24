@@ -14,6 +14,7 @@ import (
 type Environment struct {
 	ID        uuid.UUID `json:"id" db:"id"`
 	Name      string    `json:"name" db:"name"`
+	Hosts     Hosts     `json:"hosts" has_many:"hosts" fk_id:"environment_id"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
@@ -51,4 +52,14 @@ func (e *Environment) ValidateCreate(tx *pop.Connection) (*validate.Errors, erro
 // This method is not required and may be deleted.
 func (e *Environment) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
+}
+
+// SelectLabel is used to display the environment name in the select box
+func (e Environment) SelectLabel() string {
+	return e.Name
+}
+
+// SelectValue is used to display the environment id in the select box
+func (e Environment) SelectValue() interface{} {
+	return e.ID
 }

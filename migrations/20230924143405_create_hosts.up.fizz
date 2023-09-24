@@ -1,0 +1,11 @@
+create_table("hosts") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("name", "string", {})
+	t.Column("ip", "string", {})
+	t.Column("environment_id", "uuid", {})
+	t.Column("ssh_user", "string", {})
+	t.Column("ssh_port", "integer", {})
+	t.Column("ssh_key", "string", {})
+	t.Timestamps()
+	t.ForeignKey("environment_id", {"environments": ["id"]}, {"on_delete": "cascade"})
+}
