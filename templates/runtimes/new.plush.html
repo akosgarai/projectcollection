@@ -1,0 +1,8 @@
+<div class="py-4 mb-2">
+  <h3 class="d-inline-block">New Runtime</h3>
+</div>
+
+<%= formFor(runtime, {action: runtimesPath(), method: "POST"}) { %>
+  <%= partial("runtimes/form.html") %>
+  <%= linkTo(runtimesPath(), {class: "btn btn-warning", "data-confirm": "Are you sure?", body: "Cancel"}) %>
+<% } %>

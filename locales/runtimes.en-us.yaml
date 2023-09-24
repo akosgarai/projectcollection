@@ -1,0 +1,6 @@
+- id: "runtime.created.success"
+  translation: "Runtime was successfully created."
+- id: "runtime.updated.success"
+  translation: "Runtime was successfully updated."
+- id: "runtime.destroyed.success"
+  translation: "Runtime was successfully destroyed."

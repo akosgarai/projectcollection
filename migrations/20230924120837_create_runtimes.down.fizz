@@ -1,0 +1,2 @@
+drop_table("runtimes")
+drop_index("runtimes", "runtimes_name_idx")
