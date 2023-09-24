@@ -1,0 +1,6 @@
+- id: "environment.created.success"
+  translation: "Environment was successfully created."
+- id: "environment.updated.success"
+  translation: "Environment was successfully updated."
+- id: "environment.destroyed.success"
+  translation: "Environment was successfully destroyed."

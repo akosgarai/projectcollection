@@ -69,6 +69,8 @@ func App() *buffalo.App {
 
 		app.Resource("/dbtypes", DbtypesResource{})
 		app.Resource("/runtimes", RuntimesResource{})
+
+		app.Resource("/environments", EnvironmentsResource{})
 		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
 	})
 

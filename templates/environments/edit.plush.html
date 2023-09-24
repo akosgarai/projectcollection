@@ -1,0 +1,8 @@
+<div class="py-4 mb-2">
+  <h3 class="d-inline-block">Edit Environment</h3>
+</div>
+
+<%= formFor(environment, {action: environmentPath({ environment_id: environment.ID }), method: "PUT"}) { %>
+  <%= partial("environments/form.html") %>
+  <%= linkTo(environmentPath({ environment_id: environment.ID }), {class: "btn btn-warning", "data-confirm": "Are you sure?", body: "Cancel"}) %>
+<% } %>

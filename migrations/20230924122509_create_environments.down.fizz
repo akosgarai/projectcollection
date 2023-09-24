@@ -1,0 +1,2 @@
+drop_table("environments")
+drop_index("environments", "environments_name_idx")
