@@ -1,0 +1,8 @@
+<div class="py-4 mb-2">
+  <h3 class="d-inline-block">Edit Dbtype</h3>
+</div>
+
+<%= formFor(dbtype, {action: dbtypePath({ dbtype_id: dbtype.ID }), method: "PUT"}) { %>
+  <%= partial("dbtypes/form.html") %>
+  <%= linkTo(dbtypePath({ dbtype_id: dbtype.ID }), {class: "btn btn-warning", "data-confirm": "Are you sure?", body: "Cancel"}) %>
+<% } %>

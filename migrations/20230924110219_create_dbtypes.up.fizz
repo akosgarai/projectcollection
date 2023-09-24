@@ -1,0 +1,6 @@
+create_table("dbtypes") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("name", "string", {})
+	t.Timestamps()
+}
+add_index("dbtypes", "name", {"unique": true})

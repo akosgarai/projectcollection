@@ -1,0 +1,6 @@
+- id: "dbtype.created.success"
+  translation: "Dbtype was successfully created."
+- id: "dbtype.updated.success"
+  translation: "Dbtype was successfully updated."
+- id: "dbtype.destroyed.success"
+  translation: "Dbtype was successfully destroyed."
