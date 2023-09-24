@@ -38,5 +38,5 @@ ENV GODEBUG=netdns=go
 EXPOSE 3000
 
 # Uncomment to run the migrations before running the binary:
-# CMD /bin/app migrate; /bin/app
-CMD exec /bin/app
+CMD /bin/app migrate; /bin/app
+# CMD exec /bin/app
