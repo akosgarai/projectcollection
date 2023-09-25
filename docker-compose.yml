@@ -14,6 +14,28 @@ services:
       db:
         condition: service_healthy
 
+  staging:
+    build:
+      dockerfile: Dockerfile.environments
+    volumes:
+      - ./environments/staging:/usr/local/apache2/htdocs/
+      - ./bin/setup-project.sh:/usr/local/bin/setup-project.sh
+    ports:
+      - 9091:80
+    networks:
+      - projectcollection
+
+  production:
+    build:
+      dockerfile: Dockerfile.environments
+    volumes:
+      - ./environments/production:/usr/local/apache2/htdocs/
+      - ./bin/setup-project.sh:/usr/local/bin/setup-project.sh
+    ports:
+      - 9096:80
+    networks:
+      - projectcollection
+
   db:
     image: postgres:16
     restart: always

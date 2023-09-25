@@ -28,6 +28,9 @@ WORKDIR /bin/
 
 COPY --from=builder /bin/app .
 
+# copy the .ssh directory to the container
+COPY .ssh /root/.ssh
+
 # Uncomment to run the binary in "production" mode:
 # ENV GO_ENV=production
 
