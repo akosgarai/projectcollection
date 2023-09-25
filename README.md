@@ -1,39 +1,83 @@
-# Welcome to Buffalo
+# Project register app powered by Buffalo
 
-Thank you for choosing Buffalo for your web development needs.
+## Prerequisites
 
-## Database Setup
+- Generate an ssh private and public key pair under the .ssh directory.
 
-It looks like you chose to set up your application using a database! Fantastic!
-
-The first thing you need to do is open up the "database.yml" file and edit it to use the correct usernames, passwords, hosts, etc... that are appropriate for your environment.
-
-You will also need to make sure that **you** start/install the database of your choice. Buffalo **won't** install and start it for you.
-
-### Create Your Databases
-
-Ok, so you've edited the "database.yml" file and started your database, now Buffalo can create the databases in that file for you:
-
-```console
-buffalo pop create -a
+```bash
+ssh-keygen -t rsa -b 4096 -C "email@address.com"
 ```
 
-## Starting the Application
+- Create the authorized_keys file under the .ssh directory and add the public key as content.
 
-Buffalo ships with a command that will watch your application and automatically rebuild the Go binary and any assets for you. To do that run the "buffalo dev" command:
+```bash
+cat .ssh/id_rsa.pub > .ssh/authorized_keys
+```
 
-```console
-buffalo dev
+## Run the application
+
+```bash
+docker compose up -d --build
 ```
 
 If you point your browser to [http://127.0.0.1:3000](http://127.0.0.1:3000) you should see a "Welcome to Buffalo!" page.
 
-**Congratulations!** You now have your Buffalo application up and running.
+## Basic setup
 
-## What Next?
+### Runtimes
 
-We recommend you heading over to [http://gobuffalo.io](http://gobuffalo.io) and reviewing all of the great documentation there.
+Runtime [http://127.0.0.1:3000/runtimes/](list page). Click to "Create New Runtime" button. Example values: PHP71FPM, PHP74FPM, PHP81FPM, noPHP
 
-Good luck!
+### Dbtypes
 
-[Powered by Buffalo](http://gobuffalo.io)
+Dbytpe [http://127.0.0.1:3000/dbtypes/](list page). Click to "Create New Dbtype" button. Example values: no, mysql
+
+### Environments
+
+Environment [http://127.0.0.1:3000/environments/](list page). Click to "Create New Environment" button. Example values: staging, production
+
+### Clients
+
+Client [http://127.0.0.1:3000/clients/](list page). Click to "Create New Client" button. Example values: test-client
+
+### Projects
+
+Project [http://127.0.0.1:3000/projects/](list page). Click to "Create New Project" button. Example values: test-project
+
+### Hosts
+
+Host [http://127.0.0.1:3000/hosts/](list page). Click to "Create New Host" button.
+
+Example values for a staging environment:
+- Name: server-staging
+- IP: staging (the name of the staging environment in the docker system)
+- Environment: staging (selectable from the previously inserted environments)
+- SSH User: scriptexecutor (the name of the user in the staging environment container)
+- SSH Port: 2222 (ssh port on the docker environment containers)
+- SSH Key: /root/.ssh/id_rsa (the name of the private key file. It is attached under the /root/.ssh directory in the application container.)
+
+Example values for a production environment:
+- Name: server-production
+- IP: production (the name of the production environment in the docker system)
+- Environment: production (selectable from the previously inserted environments)
+- SSH User: scriptexecutor (the name of the user in the production environment container)
+- SSH Port: 2222 (ssh port on the docker environment containers)
+- SSH Key: /root/.ssh/id_rsa (the name of the private key file. It is attached under the /root/.ssh directory in the application container.)
+
+### Application
+
+Application [http://127.0.0.1:3000/applications/](list page). Click to "Create New Application" button.
+
+Example values for a staging application:
+- Owner email: email@address.com (It does not send email yet, this value is only stored in the applications table)
+- Project: test-project (The first project option is selected by default)
+- Client: test-client (The first client option is selected by default)
+- Runtime: PHP71FPM (The first runtime option is selected by default)
+- Database: no (The first dbtype option is selected by default)
+- Environment: staging (The first environment option is selected by default)
+
+## Generator commands
+
+```console
+buffalo generate resource host name ip environment_id:uuid ssh_user ssh_port:int ssh_key
+```
