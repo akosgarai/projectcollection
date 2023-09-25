@@ -1,0 +1,7 @@
+<%= f.InputTag("OwnerEmail") %>
+<%= f.SelectTag("ProjectID", {options: projects, "label": "Project", value: application.ProjectID}) %>
+<%= f.SelectTag("ClientID", {options: clients, "label": "Client", value: application.ClientID}) %>
+<%= f.SelectTag("RuntimeID", {options: runtimes, "label": "Runtime", value: application.RuntimeID}) %>
+<%= f.SelectTag("DatabaseID", {options: databases, "label": "Database", value: application.DatabaseID}) %>
+<%= f.SelectTag("EnvironmentID", {options: environments, "label": "Environment", value: application.EnvironmentID}) %>
+<button class="btn btn-success" role="submit">Save</button>

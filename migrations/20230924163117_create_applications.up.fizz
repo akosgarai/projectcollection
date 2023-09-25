@@ -1,0 +1,16 @@
+create_table("applications") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("owner_email", "string", {})
+	t.Column("project_id", "uuid", {})
+	t.Column("client_id", "uuid", {})
+	t.Column("runtime_id", "uuid", {})
+	t.Column("database_id", "uuid", {})
+	t.Column("environment_id", "uuid", {})
+	t.Timestamps()
+	t.ForeignKey("project_id", {"projects": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("client_id", {"clients": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("runtime_id", {"runtimes": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("database_id", {"dbtypes": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("environment_id", {"environments": ["id"]}, {"on_delete": "cascade"})
+}
+add_index("applications", ["project_id", "client_id", "environment_id"], {"unique": true})

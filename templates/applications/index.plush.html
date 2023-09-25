@@ -1,0 +1,33 @@
+<div class="py-4 mb-2">
+  <h3 class="d-inline-block">Applications</h3>
+  <div class="float-end">
+    <%= linkTo(newApplicationsPath(), {class: "btn btn-primary"}) { %>
+      Create New Application
+    <% } %>
+  </div>
+</div>
+
+<table class="table table-hover table-bordered">
+  <thead class="thead-light">
+    <th>OwnerEmail</th><th>Project</th><th>Client</th><th>Runtime</th><th>Database</th><th>Environment</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (application) in applications { %>
+      <tr>
+        <td class="align-middle"><%= application.OwnerEmail %></td><td class="align-middle"><%= application.Project.Name %></td><td class="align-middle"><%= application.Client.Name %></td><td class="align-middle"><%= application.Runtime.Name %></td><td class="align-middle"><%= application.Database.Name %></td><td class="align-middle"><%= application.Environment.Name %></td>
+        <td>
+          <div class="float-end">
+            <%= linkTo(applicationPath({ application_id: application.ID }), {class: "btn btn-info", body: "View"}) %>
+            <%= linkTo(editApplicationPath({ application_id: application.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+            <%= linkTo(applicationPath({ application_id: application.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= paginator(pagination) %>
+</div>
