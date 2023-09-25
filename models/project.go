@@ -52,3 +52,13 @@ func (p *Project) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 func (p *Project) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
+
+// SelectLabel is used to display the project name in the select box
+func (p Project) SelectLabel() string {
+	return p.Name
+}
+
+// SelectValue is used to display the project id in the select box
+func (p Project) SelectValue() interface{} {
+	return p.ID
+}

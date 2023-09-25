@@ -52,3 +52,13 @@ func (r *Runtime) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 func (r *Runtime) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
+
+// SelectLabel is used to display the runtime name in the select box
+func (r Runtime) SelectLabel() string {
+	return r.Name
+}
+
+// SelectValue is used to display the runtime name in the select box
+func (r Runtime) SelectValue() interface{} {
+	return r.ID
+}

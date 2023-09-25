@@ -52,3 +52,13 @@ func (c *Client) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 func (c *Client) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
+
+// SelectLabel is used to display the client name in the select box
+func (c Client) SelectLabel() string {
+	return c.Name
+}
+
+// SelectValue is used to display the client name in the select box
+func (c Client) SelectValue() interface{} {
+	return c.ID
+}

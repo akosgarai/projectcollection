@@ -52,3 +52,13 @@ func (d *Dbtype) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 func (d *Dbtype) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
+
+// SelectLabel is used to display the dbtype name in the select box
+func (d Dbtype) SelectLabel() string {
+	return d.Name
+}
+
+// SelectValue is used to display the dbtype id in the select box
+func (d Dbtype) SelectValue() interface{} {
+	return d.ID
+}
