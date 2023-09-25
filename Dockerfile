@@ -39,7 +39,11 @@ ENV ADDR=0.0.0.0
 ENV GODEBUG=netdns=go
 
 EXPOSE 3000
+# setup the cron job with flock to prevent multiple instances of the same job
+RUN echo "* * * * * flock -n /tmp/cron.lock /bin/app task processor:application" | crontab -
+# start the cron daemon in the background
+CMD crond -f -d 8 & /bin/app migrate; /bin/app
 
 # Uncomment to run the migrations before running the binary:
-CMD /bin/app migrate; /bin/app
+# CMD /bin/app migrate; /bin/app
 # CMD exec /bin/app
