@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link <%= activeClass(activeMenu, "applications/") %>" aria-current="page" href="<%= applicationsPath() %>">Applications</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activeClass(activeMenu, "hosts/") %>" aria-current="page" href="<%= hostsPath() %>">Hosts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activeClass(activeMenu, "environments/") %>" aria-current="page" href="<%= environmentsPath() %>">Environments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activeClass(activeMenu, "runtimes/") %>" aria-current="page" href="<%= runtimesPath() %>">Runtimes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activeClass(activeMenu, "dbtypes/") %>" aria-current="page" href="<%= dbtypesPath() %>">Databases</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activeClass(activeMenu, "clients/") %>" aria-current="page" href="<%= clientsPath() %>">Clients</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activeClass(activeMenu, "projects/") %>" aria-current="page" href="<%= projectsPath() %>">Projects</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= activeClass(activeMenu, "job_applications/") %>" aria-current="page" href="<%= jobApplicationsPath() %>">Jobs</a>
+        </li>
+    </div>
+  </div>
+</nav>

@@ -67,6 +67,9 @@ func App() *buffalo.App {
 
 		app.GET("/", HomeHandler)
 
+		// setup the active menu
+		app.Use(activeMenu)
+
 		app.Resource("/dbtypes", DbtypesResource{})
 		app.Resource("/runtimes", RuntimesResource{})
 
@@ -79,6 +82,7 @@ func App() *buffalo.App {
 		app.GET("/job_applications", JobApplicationsResource{}.List)
 		app.GET("/job_applications/{job_application_id}", JobApplicationsResource{}.Show)
 		app.DELETE("/job_applications/{job_application_id}", JobApplicationsResource{}.Destroy)
+
 		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
 	})
 
@@ -107,4 +111,20 @@ func forceSSL() buffalo.MiddlewareFunc {
 		SSLRedirect:     ENV == "production",
 		SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https"},
 	})
+}
+
+// activeMenu is a helper function to determine which menu item to highlight
+// based on the current request path.
+func activeMenu(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		firstPath := c.Request().URL.Path[1:]
+		c.Set("activeMenu", firstPath)
+		c.Set("activeClass", func(path, menuName string) string {
+			if path == menuName {
+				return "active"
+			}
+			return ""
+		})
+		return next(c)
+	}
 }
