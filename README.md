@@ -76,6 +76,16 @@ Example values for a staging application:
 - Database: no (The first dbtype option is selected by default)
 - Environment: staging (The first environment option is selected by default)
 
+## Application initialization
+
+Once an application has been created an entry will be created to the job_application table. It is processed by a task that is executed with cron.
+
+job_application table:
+- new_params (json of the expected values of the application)
+- orig_params (json of the original values of the application - on case of edit)
+- processed_at (default null)
+- response
+
 ## Generator commands
 
 ```console
