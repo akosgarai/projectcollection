@@ -1,0 +1,8 @@
+create_table("job_applications") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("new_params", "text", {null: true})
+	t.Column("orig_params", "text", {null: true})
+	t.Column("processed_at", "timestamp", {null: true})
+	t.Column("response", "text", {null: true})
+	t.Timestamps()
+}

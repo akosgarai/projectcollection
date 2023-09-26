@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/nulls"
 	"github.com/gobuffalo/pop/v6"
 	"github.com/gobuffalo/x/responder"
 
@@ -143,6 +144,11 @@ func (v ApplicationsResource) Create(c buffalo.Context) error {
 			return c.Render(http.StatusUnprocessableEntity, r.XML(verrs))
 		}).Respond(c)
 	}
+	// Create an entry to the job_application table
+	jobApplication := &models.JobApplication{
+		NewParams: nulls.NewString(application.String()),
+	}
+	tx.Create(jobApplication)
 
 	return responder.Wants("html", func(c buffalo.Context) error {
 		// If there are no errors set a success message

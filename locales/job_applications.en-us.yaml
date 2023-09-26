@@ -1,0 +1,6 @@
+- id: "job_application.created.success"
+  translation: "JobApplication was successfully created."
+- id: "job_application.updated.success"
+  translation: "JobApplication was successfully updated."
+- id: "job_application.destroyed.success"
+  translation: "JobApplication was successfully destroyed."
