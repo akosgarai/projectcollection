@@ -83,6 +83,10 @@ table {
   text-align: center;
 }
 
+div.responsive-table {
+  overflow-x: auto;
+}
+
 @media all and (max-width: 770px) {
   .titles {
     h1 {
