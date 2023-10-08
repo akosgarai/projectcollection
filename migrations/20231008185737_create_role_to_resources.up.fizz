@@ -1,0 +1,6 @@
+create_table("role_to_resources") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("role_id", "uuid", {})
+	t.Column("resource_id", "uuid", {})
+	t.Timestamps()
+}
