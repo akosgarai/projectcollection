@@ -2,5 +2,8 @@ create_table("role_to_resources") {
 	t.Column("id", "uuid", {primary: true})
 	t.Column("role_id", "uuid", {})
 	t.Column("resource_id", "uuid", {})
-	t.Timestamps()
+	t.DisableTimestamps()
+	t.ForeignKey("role_id", {"roles": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("resource_id", {"resources": ["id"]}, {"on_delete": "cascade"})
 }
+add_index("role_to_resources", ["role_id", "resource_id"], {"unique": true})

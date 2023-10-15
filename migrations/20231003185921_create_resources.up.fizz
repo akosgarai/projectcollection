@@ -3,3 +3,4 @@ create_table("resources") {
 	t.Column("name", "string", {})
 	t.Timestamps()
 }
+add_index("resources", "name", {"unique": true})

@@ -3,3 +3,4 @@ create_table("users"){
     t.Column("email", "string", {})
     t.Column("password_hash", "string", {})
 }
+add_index("users", "email", {"unique": true})

@@ -4,3 +4,4 @@ create_table("roles") {
 	t.Column("description", "string", {})
 	t.Timestamps()
 }
+add_index("roles", "name", {"unique": true})
