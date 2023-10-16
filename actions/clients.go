@@ -36,6 +36,10 @@ func (v ClientsResource) List(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "client.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("client.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view clients"))
+	}
 
 	clients := &models.Clients{}
 
@@ -69,6 +73,10 @@ func (v ClientsResource) Show(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "client.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("client.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view clients"))
+	}
 
 	// Allocate an empty Client
 	client := &models.Client{}
@@ -92,6 +100,10 @@ func (v ClientsResource) Show(c buffalo.Context) error {
 // New renders the form for creating a new Client.
 // This function is mapped to the path GET /clients/new
 func (v ClientsResource) New(c buffalo.Context) error {
+	// check the permissions of the user. If it hasn't got permission for the "client.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("client.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create clients"))
+	}
 	c.Set("client", &models.Client{})
 
 	return c.Render(http.StatusOK, r.HTML("clients/new.plush.html"))
@@ -100,6 +112,10 @@ func (v ClientsResource) New(c buffalo.Context) error {
 // Create adds a Client to the DB. This function is mapped to the
 // path POST /clients
 func (v ClientsResource) Create(c buffalo.Context) error {
+	// check the permissions of the user. If it hasn't got permission for the "client.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("client.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create clients"))
+	}
 	// Allocate an empty Client
 	client := &models.Client{}
 
@@ -158,6 +174,10 @@ func (v ClientsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "client.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("client.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit clients"))
+	}
 
 	// Allocate an empty Client
 	client := &models.Client{}
@@ -177,6 +197,10 @@ func (v ClientsResource) Update(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "client.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("client.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit clients"))
 	}
 
 	// Allocate an empty Client
@@ -233,6 +257,10 @@ func (v ClientsResource) Destroy(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "client.delete" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("client.delete") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to delete clients"))
 	}
 
 	// Allocate an empty Client
