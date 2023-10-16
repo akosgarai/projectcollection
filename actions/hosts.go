@@ -36,6 +36,10 @@ func (v HostsResource) List(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "host.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("host.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view hosts"))
+	}
 
 	hosts := &models.Hosts{}
 
@@ -69,6 +73,10 @@ func (v HostsResource) Show(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "host.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("host.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view hosts"))
+	}
 
 	// Allocate an empty Host
 	host := &models.Host{}
@@ -97,6 +105,10 @@ func (v HostsResource) New(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "host.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("host.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create hosts"))
+	}
 	c.Set("host", &models.Host{})
 	environments := models.Environments{}
 	tx.All(&environments)
@@ -120,6 +132,10 @@ func (v HostsResource) Create(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "host.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("host.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create hosts"))
 	}
 
 	// Validate the data from the html form
@@ -166,6 +182,10 @@ func (v HostsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "host.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("host.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit hosts"))
+	}
 
 	// Allocate an empty Host
 	host := &models.Host{}
@@ -188,6 +208,10 @@ func (v HostsResource) Update(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "host.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("host.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit hosts"))
 	}
 
 	// Allocate an empty Host
@@ -244,6 +268,10 @@ func (v HostsResource) Destroy(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "host.delete" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("host.delete") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to delete hosts"))
 	}
 
 	// Allocate an empty Host
