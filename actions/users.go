@@ -49,7 +49,7 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 		if uid := c.Session().Get("current_user_id"); uid != nil {
 			u := &models.User{}
 			tx := c.Value("tx").(*pop.Connection)
-			err := tx.Find(u, uid)
+			err := tx.Eager("Role.Role.Resources.Resource").Find(u, uid)
 			if err != nil {
 				c.Logger().Warnf("user attempted to access with current_user_id '%v' that is not found: %v", uid, err)
 
