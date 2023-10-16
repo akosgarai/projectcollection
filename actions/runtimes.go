@@ -36,6 +36,10 @@ func (v RuntimesResource) List(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "runtime.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("runtime.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view runtimes"))
+	}
 
 	runtimes := &models.Runtimes{}
 
@@ -69,6 +73,10 @@ func (v RuntimesResource) Show(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "runtime.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("runtime.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view runtimes"))
+	}
 
 	// Allocate an empty Runtime
 	runtime := &models.Runtime{}
@@ -92,6 +100,10 @@ func (v RuntimesResource) Show(c buffalo.Context) error {
 // New renders the form for creating a new Runtime.
 // This function is mapped to the path GET /runtimes/new
 func (v RuntimesResource) New(c buffalo.Context) error {
+	// check the permissions of the user. If it hasn't got permission for the "runtime.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("runtime.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create runtimes"))
+	}
 	c.Set("runtime", &models.Runtime{})
 
 	return c.Render(http.StatusOK, r.HTML("runtimes/new.plush.html"))
@@ -106,6 +118,10 @@ func (v RuntimesResource) Create(c buffalo.Context) error {
 	// Bind runtime to the html form elements
 	if err := c.Bind(runtime); err != nil {
 		return err
+	}
+	// check the permissions of the user. If it hasn't got permission for the "runtime.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("runtime.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create runtimes"))
 	}
 
 	// Get the DB connection from the context
@@ -158,6 +174,10 @@ func (v RuntimesResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "runtime.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("runtime.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit runtimes"))
+	}
 
 	// Allocate an empty Runtime
 	runtime := &models.Runtime{}
@@ -177,6 +197,10 @@ func (v RuntimesResource) Update(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "runtime.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("runtime.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit runtimes"))
 	}
 
 	// Allocate an empty Runtime
@@ -233,6 +257,10 @@ func (v RuntimesResource) Destroy(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "runtime.delete" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("runtime.delete") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to delete runtimes"))
 	}
 
 	// Allocate an empty Runtime
