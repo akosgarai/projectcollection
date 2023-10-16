@@ -37,6 +37,10 @@ func (v ApplicationsResource) List(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "application.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view applications"))
+	}
 
 	applications := &models.Applications{}
 
@@ -70,6 +74,10 @@ func (v ApplicationsResource) Show(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "application.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view applications"))
+	}
 
 	// Allocate an empty Application
 	application := &models.Application{}
@@ -98,6 +106,10 @@ func (v ApplicationsResource) New(c buffalo.Context) error {
 	if err := v.setSelectLists(c); err != nil {
 		return err
 	}
+	// check the permissions of the user. If it hasn't got permission for the "application.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create applications"))
+	}
 
 	return c.Render(http.StatusOK, r.HTML("applications/new.plush.html"))
 }
@@ -105,6 +117,10 @@ func (v ApplicationsResource) New(c buffalo.Context) error {
 // Create adds a Application to the DB. This function is mapped to the
 // path POST /applications
 func (v ApplicationsResource) Create(c buffalo.Context) error {
+	// check the permissions of the user. If it hasn't got permission for the "application.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create applications"))
+	}
 	// Allocate an empty Application
 	application := &models.Application{}
 
@@ -171,6 +187,10 @@ func (v ApplicationsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "application.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit applications"))
+	}
 
 	// Allocate an empty Application
 	application := &models.Application{}
@@ -193,6 +213,10 @@ func (v ApplicationsResource) Update(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "application.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit applications"))
 	}
 
 	// Allocate an empty Application
@@ -252,6 +276,10 @@ func (v ApplicationsResource) Destroy(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "application.delete" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.delete") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to delete applications"))
 	}
 
 	// Allocate an empty Application
