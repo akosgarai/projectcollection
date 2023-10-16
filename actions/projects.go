@@ -36,6 +36,10 @@ func (v ProjectsResource) List(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "project.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("project.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view projects"))
+	}
 
 	projects := &models.Projects{}
 
@@ -69,6 +73,10 @@ func (v ProjectsResource) Show(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "project.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("project.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view projects"))
+	}
 
 	// Allocate an empty Project
 	project := &models.Project{}
@@ -92,6 +100,10 @@ func (v ProjectsResource) Show(c buffalo.Context) error {
 // New renders the form for creating a new Project.
 // This function is mapped to the path GET /projects/new
 func (v ProjectsResource) New(c buffalo.Context) error {
+	// check the permissions of the user. If it hasn't got permission for the "project.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("project.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create projects"))
+	}
 	c.Set("project", &models.Project{})
 
 	return c.Render(http.StatusOK, r.HTML("projects/new.plush.html"))
@@ -106,6 +118,10 @@ func (v ProjectsResource) Create(c buffalo.Context) error {
 	// Bind project to the html form elements
 	if err := c.Bind(project); err != nil {
 		return err
+	}
+	// check the permissions of the user. If it hasn't got permission for the "project.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("project.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create projects"))
 	}
 
 	// Get the DB connection from the context
@@ -158,6 +174,10 @@ func (v ProjectsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "project.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("project.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit projects"))
+	}
 
 	// Allocate an empty Project
 	project := &models.Project{}
@@ -177,6 +197,10 @@ func (v ProjectsResource) Update(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "project.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("project.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit projects"))
 	}
 
 	// Allocate an empty Project
@@ -233,6 +257,10 @@ func (v ProjectsResource) Destroy(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "project.delete" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("project.delete") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to delete projects"))
 	}
 
 	// Allocate an empty Project
