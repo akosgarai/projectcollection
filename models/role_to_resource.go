@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/gobuffalo/pop/v6"
 	"github.com/gobuffalo/validate/v3"
@@ -14,8 +13,7 @@ type RoleToResource struct {
 	ID         uuid.UUID `json:"id" db:"id"`
 	RoleID     uuid.UUID `json:"role_id" db:"role_id"`
 	ResourceID uuid.UUID `json:"resource_id" db:"resource_id"`
-	CreatedAt  time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt  time.Time `json:"updated_at" db:"updated_at"`
+	Resource   Resource  `belongs_to:"resource"`
 }
 
 // String is not required by pop and may be deleted

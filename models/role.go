@@ -12,11 +12,12 @@ import (
 
 // Role is used by pop to map your roles database table to your go code.
 type Role struct {
-	ID          uuid.UUID `json:"id" db:"id"`
-	Name        string    `json:"name" db:"name"`
-	Description string    `json:"description" db:"description"`
-	CreatedAt   time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
+	ID          uuid.UUID       `json:"id" db:"id"`
+	Name        string          `json:"name" db:"name"`
+	Description string          `json:"description" db:"description"`
+	CreatedAt   time.Time       `json:"created_at" db:"created_at"`
+	UpdatedAt   time.Time       `json:"updated_at" db:"updated_at"`
+	Resources   RoleToResources `has_many:"role_to_resources"`
 }
 
 // String is not required by pop and may be deleted

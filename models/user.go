@@ -15,11 +15,12 @@ import (
 
 // User is a generated model from buffalo-auth, it serves as the base for username/password authentication.
 type User struct {
-	ID           uuid.UUID `json:"id" db:"id"`
-	CreatedAt    time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at" db:"updated_at"`
-	Email        string    `json:"email" db:"email"`
-	PasswordHash string    `json:"password_hash" db:"password_hash"`
+	ID           uuid.UUID  `json:"id" db:"id"`
+	CreatedAt    time.Time  `json:"created_at" db:"created_at"`
+	UpdatedAt    time.Time  `json:"updated_at" db:"updated_at"`
+	Email        string     `json:"email" db:"email"`
+	PasswordHash string     `json:"password_hash" db:"password_hash"`
+	Role         UserToRole `has_one:"user_to_roles"`
 
 	Password             string `json:"-" db:"-"`
 	PasswordConfirmation string `json:"-" db:"-"`
@@ -94,4 +95,14 @@ func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 // This method is not required and may be deleted.
 func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
+}
+
+// HasPermissionFor checks if the user has the given permission. Returns true if the user has the permission, false otherwise.
+func (u *User) HasPermissionFor(permission string) bool {
+	for _, resource := range u.Role.Role.Resources {
+		if resource.Resource.Name == permission {
+			return true
+		}
+	}
+	return false
 }
