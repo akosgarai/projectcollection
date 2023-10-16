@@ -36,6 +36,10 @@ func (v EnvironmentsResource) List(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "environment.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("environment.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view environments"))
+	}
 
 	environments := &models.Environments{}
 
@@ -69,6 +73,10 @@ func (v EnvironmentsResource) Show(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "environment.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("environment.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view environments"))
+	}
 
 	// Allocate an empty Environment
 	environment := &models.Environment{}
@@ -92,6 +100,10 @@ func (v EnvironmentsResource) Show(c buffalo.Context) error {
 // New renders the form for creating a new Environment.
 // This function is mapped to the path GET /environments/new
 func (v EnvironmentsResource) New(c buffalo.Context) error {
+	// check the permissions of the user. If it hasn't got permission for the "environment.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("environment.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create environments"))
+	}
 	c.Set("environment", &models.Environment{})
 
 	return c.Render(http.StatusOK, r.HTML("environments/new.plush.html"))
@@ -106,6 +118,10 @@ func (v EnvironmentsResource) Create(c buffalo.Context) error {
 	// Bind environment to the html form elements
 	if err := c.Bind(environment); err != nil {
 		return err
+	}
+	// check the permissions of the user. If it hasn't got permission for the "environment.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("environment.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create environments"))
 	}
 
 	// Get the DB connection from the context
@@ -158,6 +174,10 @@ func (v EnvironmentsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "environment.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("environment.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit environments"))
+	}
 
 	// Allocate an empty Environment
 	environment := &models.Environment{}
@@ -177,6 +197,10 @@ func (v EnvironmentsResource) Update(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "environment.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("environment.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit environments"))
 	}
 
 	// Allocate an empty Environment
@@ -233,6 +257,10 @@ func (v EnvironmentsResource) Destroy(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "environment.delete" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("environment.delete") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to delete environments"))
 	}
 
 	// Allocate an empty Environment
