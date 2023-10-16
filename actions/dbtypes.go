@@ -36,6 +36,10 @@ func (v DbtypesResource) List(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "dbtype.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("dbtype.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view dbtypes"))
+	}
 
 	dbtypes := &models.Dbtypes{}
 
@@ -69,6 +73,10 @@ func (v DbtypesResource) Show(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "dbtype.view" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("dbtype.view") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view dbtypes"))
+	}
 
 	// Allocate an empty Dbtype
 	dbtype := &models.Dbtype{}
@@ -92,6 +100,10 @@ func (v DbtypesResource) Show(c buffalo.Context) error {
 // New renders the form for creating a new Dbtype.
 // This function is mapped to the path GET /dbtypes/new
 func (v DbtypesResource) New(c buffalo.Context) error {
+	// check the permissions of the user. If it hasn't got permission for the "dbtype.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("dbtype.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create dbtypes"))
+	}
 	c.Set("dbtype", &models.Dbtype{})
 
 	return c.Render(http.StatusOK, r.HTML("dbtypes/new.plush.html"))
@@ -112,6 +124,10 @@ func (v DbtypesResource) Create(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "dbtype.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("dbtype.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to create dbtypes"))
 	}
 
 	// Validate the data from the html form
@@ -158,6 +174,10 @@ func (v DbtypesResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "dbtype.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("dbtype.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit dbtypes"))
+	}
 
 	// Allocate an empty Dbtype
 	dbtype := &models.Dbtype{}
@@ -177,6 +197,10 @@ func (v DbtypesResource) Update(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "dbtype.edit" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("dbtype.edit") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to edit dbtypes"))
 	}
 
 	// Allocate an empty Dbtype
@@ -233,6 +257,10 @@ func (v DbtypesResource) Destroy(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "dbtype.delete" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("dbtype.delete") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to delete dbtypes"))
 	}
 
 	// Allocate an empty Dbtype
