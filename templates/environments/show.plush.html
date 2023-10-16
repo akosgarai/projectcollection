@@ -5,8 +5,12 @@
     <%= linkTo(environmentsPath(), {class: "btn btn-info"}) { %>
       Back to all Environments
     <% } %>
-    <%= linkTo(editEnvironmentPath({ environment_id: environment.ID }), {class: "btn btn-warning", body: "Edit"}) %>
-    <%= linkTo(environmentPath({ environment_id: environment.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <%= if (current_user.HasPermissionFor("environment.edit")) { %>
+      <%= linkTo(editEnvironmentPath({ environment_id: environment.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+    <% } %>
+    <%= if (current_user.HasPermissionFor("environment.delete")) { %>
+      <%= linkTo(environmentPath({ environment_id: environment.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <% } %>
   </div>
 </div>
 

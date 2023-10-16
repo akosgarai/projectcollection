@@ -5,8 +5,12 @@
     <%= linkTo(hostsPath(), {class: "btn btn-info"}) { %>
       Back to all Hosts
     <% } %>
-    <%= linkTo(editHostPath({ host_id: host.ID }), {class: "btn btn-warning", body: "Edit"}) %>
-    <%= linkTo(hostPath({ host_id: host.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <%= if (current_user.HasPermissionFor("host.edit")) { %>
+      <%= linkTo(editHostPath({ host_id: host.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+    <% } %>
+    <%= if (current_user.HasPermissionFor("host.delete")) { %>
+      <%= linkTo(hostPath({ host_id: host.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <% } %>
   </div>
 </div>
 

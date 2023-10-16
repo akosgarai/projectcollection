@@ -5,8 +5,12 @@
     <%= linkTo(applicationsPath(), {class: "btn btn-info"}) { %>
       Back to all Applications
     <% } %>
-    <%= linkTo(editApplicationPath({ application_id: application.ID }), {class: "btn btn-warning", body: "Edit"}) %>
-    <%= linkTo(applicationPath({ application_id: application.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <%= if (current_user.HasPermissionFor("application.edit")) { %>
+      <%= linkTo(editApplicationPath({ application_id: application.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+    <% } %>
+    <%= if (current_user.HasPermissionFor("application.delete")) { %>
+      <%= linkTo(applicationPath({ application_id: application.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <% } %>
   </div>
 </div>
 

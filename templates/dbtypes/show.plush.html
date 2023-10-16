@@ -5,8 +5,12 @@
     <%= linkTo(dbtypesPath(), {class: "btn btn-info"}) { %>
       Back to all Dbtypes
     <% } %>
-    <%= linkTo(editDbtypePath({ dbtype_id: dbtype.ID }), {class: "btn btn-warning", body: "Edit"}) %>
-    <%= linkTo(dbtypePath({ dbtype_id: dbtype.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <%= if (current_user.HasPermissionFor("dbtype.edit")) { %>
+      <%= linkTo(editDbtypePath({ dbtype_id: dbtype.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+    <% } %>
+    <%= if (current_user.HasPermissionFor("dbtype.delete")) { %>
+      <%= linkTo(dbtypePath({ dbtype_id: dbtype.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <% } %>
   </div>
 </div>
 

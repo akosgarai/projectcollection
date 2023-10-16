@@ -1,10 +1,12 @@
 <div class="py-4 mb-2">
   <h3 class="d-inline-block">Applications</h3>
-  <div class="float-end">
-    <%= linkTo(newApplicationsPath(), {class: "btn btn-primary"}) { %>
-      Create New Application
-    <% } %>
-  </div>
+  <%= if (current_user.HasPermissionFor("application.create")) { %>
+    <div class="float-end">
+      <%= linkTo(newApplicationsPath(), {class: "btn btn-primary"}) { %>
+        Create New Application
+      <% } %>
+    </div>
+  <% } %>
 </div>
 
 <div class="responsive-table mt-3">
@@ -20,8 +22,12 @@
           <td>
             <div class="float-end">
               <%= linkTo(applicationPath({ application_id: application.ID }), {class: "btn btn-info", body: "View"}) %>
-              <%= linkTo(editApplicationPath({ application_id: application.ID }), {class: "btn btn-warning", body: "Edit"}) %>
-              <%= linkTo(applicationPath({ application_id: application.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+              <%= if (current_user.HasPermissionFor("application.edit")) { %>
+                <%= linkTo(editApplicationPath({ application_id: application.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+              <% } %>
+              <%= if (current_user.HasPermissionFor("application.delete")) { %>
+                <%= linkTo(applicationPath({ application_id: application.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+              <% } %>
             </div>
           </td>
         </tr>

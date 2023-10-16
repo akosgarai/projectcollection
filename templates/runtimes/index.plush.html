@@ -1,10 +1,12 @@
 <div class="py-4 mb-2">
   <h3 class="d-inline-block">Runtimes</h3>
-  <div class="float-end">
-    <%= linkTo(newRuntimesPath(), {class: "btn btn-primary"}) { %>
-      Create New Runtime
-    <% } %>
-  </div>
+  <%= if (current_user.HasPermissionFor("runtime.create")) { %>
+    <div class="float-end">
+      <%= linkTo(newRuntimesPath(), {class: "btn btn-primary"}) { %>
+        Create New Runtime
+      <% } %>
+    </div>
+  <% } %>
 </div>
 
 <div class="responsive-table mt-3">
@@ -20,8 +22,12 @@
           <td>
             <div class="float-end">
               <%= linkTo(runtimePath({ runtime_id: runtime.ID }), {class: "btn btn-info", body: "View"}) %>
-              <%= linkTo(editRuntimePath({ runtime_id: runtime.ID }), {class: "btn btn-warning", body: "Edit"}) %>
-              <%= linkTo(runtimePath({ runtime_id: runtime.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+              <%= if (current_user.HasPermissionFor("runtime.edit")) { %>
+                <%= linkTo(editRuntimePath({ runtime_id: runtime.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+              <% } %>
+              <%= if (current_user.HasPermissionFor("runtime.delete")) { %>
+                <%= linkTo(runtimePath({ runtime_id: runtime.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+              <% } %>
             </div>
           </td>
         </tr>
