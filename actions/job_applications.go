@@ -36,6 +36,10 @@ func (v JobApplicationsResource) List(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "application.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view job_applications"))
+	}
 
 	jobApplications := &models.JobApplications{}
 
@@ -69,6 +73,10 @@ func (v JobApplicationsResource) Show(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	// check the permissions of the user. If it hasn't got permission for the "application.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view job_applications"))
+	}
 
 	// Allocate an empty JobApplication
 	jobApplication := &models.JobApplication{}
@@ -96,6 +104,10 @@ func (v JobApplicationsResource) Destroy(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
+	}
+	// check the permissions of the user. If it hasn't got permission for the "application.create" resource, return an error
+	if !c.Value("current_user").(*models.User).HasPermissionFor("application.create") {
+		return c.Error(http.StatusUnauthorized, fmt.Errorf("You don't have permission to view job_applications"))
 	}
 
 	// Allocate an empty JobApplication
