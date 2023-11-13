@@ -12,13 +12,29 @@
 <div class="responsive-table mt-3">
   <table class="table table-hover table-bordered">
     <thead class="thead-light">
-      <th>Project</th><th>Client</th><th>Runtime</th><th>Database</th><th>Environment</th>
+      <th>Project</th>
+      <th>Client</th>
+      <th>Runtime</th>
+      <th>Database</th>
+      <th>Environment</th>
+      <th>Aliases</th>
       <th>&nbsp;</th>
     </thead>
     <tbody>
       <%= for (application) in applications { %>
         <tr>
-          <td class="align-middle"><%= application.Project.Name %></td><td class="align-middle"><%= application.Client.Name %></td><td class="align-middle"><%= application.Runtime.Name %></td><td class="align-middle"><%= application.Database.Name %></td><td class="align-middle"><%= application.Environment.Name %></td>
+          <td class="align-middle"><%= application.Project.Name %></td>
+          <td class="align-middle"><%= application.Client.Name %></td>
+          <td class="align-middle"><%= application.Runtime.Name %></td>
+          <td class="align-middle"><%= application.Database.Name %></td>
+          <td class="align-middle"><%= application.Environment.Name %></td>
+          <td class="align-middle">
+            <ul>
+              <%= for (alias) in application.Aliases { %>
+                <li><%= alias.Alias.Name %></li>
+              <% } %>
+            <ul>
+          </td>
           <td>
             <div class="float-end">
               <%= linkTo(applicationPath({ application_id: application.ID }), {class: "btn btn-info", body: "View"}) %>

@@ -48,3 +48,13 @@ func (a *ApplicationToAlias) ValidateCreate(tx *pop.Connection) (*validate.Error
 func (a *ApplicationToAlias) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
+
+// SelectLabel is used to display the alias name in the select box
+func (a ApplicationToAlias) SelectLabel() string {
+	return a.Alias.Name
+}
+
+// SelectValue is used to display the alias id in the select box
+func (a ApplicationToAlias) SelectValue() interface{} {
+	return a.AliasID
+}

@@ -54,11 +54,11 @@ func (a *Alias) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 }
 
 // SelectLabel is used to display the alias name in the select box
-func (a *Alias) SelectLabel() string {
+func (a Alias) SelectLabel() string {
 	return a.Name
 }
 
 // SelectValue is used to display the alias id in the select box
-func (a *Alias) SelectValue() interface{} {
+func (a Alias) SelectValue() interface{} {
 	return a.ID
 }

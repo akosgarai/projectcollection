@@ -12,19 +12,21 @@ import (
 
 // Application is used by pop to map your applications database table to your go code.
 type Application struct {
-	ID            uuid.UUID    `json:"id" db:"id"`
-	ProjectID     uuid.UUID    `json:"project_id" db:"project_id"`
-	Project       *Project     `json:"project" belongs_to:"project"`
-	ClientID      uuid.UUID    `json:"client_id" db:"client_id"`
-	Client        *Client      `json:"client" belongs_to:"client"`
-	RuntimeID     uuid.UUID    `json:"runtime_id" db:"runtime_id"`
-	Runtime       *Runtime     `json:"runtime" belongs_to:"runtime"`
-	DatabaseID    uuid.UUID    `json:"database_id" db:"database_id"`
-	Database      *Dbtype      `json:"database" belongs_to:"dbtype"`
-	EnvironmentID uuid.UUID    `json:"environment_id" db:"environment_id"`
-	Environment   *Environment `json:"environment" belongs_to:"environment"`
-	CreatedAt     time.Time    `json:"created_at" db:"created_at"`
-	UpdatedAt     time.Time    `json:"updated_at" db:"updated_at"`
+	ID            uuid.UUID            `json:"id" db:"id"`
+	ProjectID     uuid.UUID            `json:"project_id" db:"project_id"`
+	Project       *Project             `json:"project" belongs_to:"project"`
+	ClientID      uuid.UUID            `json:"client_id" db:"client_id"`
+	Client        *Client              `json:"client" belongs_to:"client"`
+	RuntimeID     uuid.UUID            `json:"runtime_id" db:"runtime_id"`
+	Runtime       *Runtime             `json:"runtime" belongs_to:"runtime"`
+	DatabaseID    uuid.UUID            `json:"database_id" db:"database_id"`
+	Database      *Dbtype              `json:"database" belongs_to:"dbtype"`
+	EnvironmentID uuid.UUID            `json:"environment_id" db:"environment_id"`
+	Environment   *Environment         `json:"environment" belongs_to:"environment"`
+	Aliases       ApplicationToAliases `json:"aliases" has_many:"application_to_aliases"`
+	NewAliases    []uuid.UUID          `json:"new_aliases" db:"-"` // used to update the aliases
+	CreatedAt     time.Time            `json:"created_at" db:"created_at"`
+	UpdatedAt     time.Time            `json:"updated_at" db:"updated_at"`
 }
 
 // String is not required by pop and may be deleted

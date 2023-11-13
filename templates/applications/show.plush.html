@@ -53,4 +53,14 @@
   </li>
 
 
+  <li class="list-group-item pb-1">
+    <label class="small d-block">Aliases</label>
+    <ul>
+      <%= for (alias) in application.Aliases { %>
+        <li><%= alias.Alias.Name %></li>
+      <% } %>
+    <ul>
+  </li>
+
+
 </ul>

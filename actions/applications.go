@@ -49,7 +49,7 @@ func (v ApplicationsResource) List(c buffalo.Context) error {
 	q := tx.PaginateFromParams(c.Params())
 
 	// Retrieve all Applications from the DB
-	if err := q.Eager().All(applications); err != nil {
+	if err := q.Eager("Project").Eager("Client").Eager("Runtime").Eager("Database").Eager("Environment").Eager("Aliases.Alias").All(applications); err != nil {
 		return err
 	}
 
@@ -83,7 +83,7 @@ func (v ApplicationsResource) Show(c buffalo.Context) error {
 	application := &models.Application{}
 
 	// To find the Application the parameter application_id is used.
-	if err := tx.Eager().Find(application, c.Param("application_id")); err != nil {
+	if err := tx.Eager("Project").Eager("Client").Eager("Runtime").Eager("Database").Eager("Environment").Eager("Aliases.Alias").Find(application, c.Param("application_id")); err != nil {
 		return c.Error(http.StatusNotFound, err)
 	}
 
@@ -166,6 +166,15 @@ func (v ApplicationsResource) Create(c buffalo.Context) error {
 	}
 	tx.Create(jobApplication)
 
+	// add the aliases to the application insert to the application_to_aliases table
+	for _, alias := range application.NewAliases {
+		applicationToAlias := &models.ApplicationToAlias{
+			ApplicationID: application.ID,
+			AliasID:       alias,
+		}
+		tx.Create(applicationToAlias)
+	}
+
 	return responder.Wants("html", func(c buffalo.Context) error {
 		// If there are no errors set a success message
 		c.Flash().Add("success", T.Translate(c, "application.created.success"))
@@ -195,7 +204,7 @@ func (v ApplicationsResource) Edit(c buffalo.Context) error {
 	// Allocate an empty Application
 	application := &models.Application{}
 
-	if err := tx.Find(application, c.Param("application_id")); err != nil {
+	if err := tx.Eager().Find(application, c.Param("application_id")); err != nil {
 		return c.Error(http.StatusNotFound, err)
 	}
 
@@ -254,6 +263,25 @@ func (v ApplicationsResource) Update(c buffalo.Context) error {
 		}).Wants("xml", func(c buffalo.Context) error {
 			return c.Render(http.StatusUnprocessableEntity, r.XML(verrs))
 		}).Respond(c)
+	}
+
+	// delete all the aliases from the application_to_aliases table
+	applicationToAliases := &models.ApplicationToAliases{}
+	if err := tx.Where("application_id = ?", application.ID).All(applicationToAliases); err != nil {
+		return err
+	}
+	for _, applicationToAlias := range *applicationToAliases {
+		if err := tx.Destroy(&applicationToAlias); err != nil {
+			return err
+		}
+	}
+	// add the aliases to the application insert to the application_to_aliases table
+	for _, alias := range application.NewAliases {
+		applicationToAlias := &models.ApplicationToAlias{
+			ApplicationID: application.ID,
+			AliasID:       alias,
+		}
+		tx.Create(applicationToAlias)
 	}
 
 	return responder.Wants("html", func(c buffalo.Context) error {
@@ -334,6 +362,18 @@ func (v ApplicationsResource) setSelectLists(c buffalo.Context) error {
 	projects := models.Projects{}
 	tx.All(&projects)
 	c.Set("projects", projects)
+
+	aliases := models.Aliases{}
+	aliasQuery := tx.Q()
+	aliasQuery.LeftJoin("application_to_aliases", "aliases.id = application_to_aliases.alias_id")
+	if c.Param("application_id") != "" {
+		aliasQuery.Where("application_to_aliases.application_id IS NULL OR application_to_aliases.application_id = ?", c.Param("application_id"))
+	} else {
+		aliasQuery.Where("application_to_aliases.application_id IS NULL")
+	}
+
+	aliasQuery.All(&aliases)
+	c.Set("aliases", aliases)
 
 	return nil
 }
