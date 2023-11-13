@@ -13,7 +13,6 @@ import (
 // Application is used by pop to map your applications database table to your go code.
 type Application struct {
 	ID            uuid.UUID    `json:"id" db:"id"`
-	OwnerEmail    string       `json:"owner_email" db:"owner_email"`
 	ProjectID     uuid.UUID    `json:"project_id" db:"project_id"`
 	Project       *Project     `json:"project" belongs_to:"project"`
 	ClientID      uuid.UUID    `json:"client_id" db:"client_id"`
@@ -47,7 +46,6 @@ func (a Applications) String() string {
 // This method is not required and may be deleted.
 func (a *Application) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
-		&validators.StringIsPresent{Field: a.OwnerEmail, Name: "OwnerEmail"},
 		&validators.UUIDIsPresent{Field: a.ProjectID, Name: "ProjectID"},
 		&validators.UUIDIsPresent{Field: a.ClientID, Name: "ClientID"},
 		&validators.UUIDIsPresent{Field: a.RuntimeID, Name: "RuntimeID"},

@@ -15,7 +15,6 @@ import (
 )
 
 type application struct {
-	OwnerEmail    string    `json:"owner_email"`
 	ID            uuid.UUID `json:"id" db:"id"`
 	ProjectID     uuid.UUID `json:"project_id" db:"project_id"`
 	ClientID      uuid.UUID `json:"client_id" db:"client_id"`
@@ -66,7 +65,6 @@ var _ = Namespace("processor", func() {
 				Database:    &dbtype,
 				Runtime:     &runtime,
 				Environment: &environment,
-				OwnerEmail:  newApp.OwnerEmail,
 			}
 
 			response := ""
@@ -113,7 +111,7 @@ func executeServerCommand(host *models.Host, data *models.Application) string {
 	// Creating the buffer which will hold the remotly executed command's output.
 	var stdoutBuf bytes.Buffer
 	ss.Stdout = &stdoutBuf
-	cmdString := fmt.Sprintf("/usr/local/bin/setup-project.sh %s %s %s %s %s", data.Client.Name, data.Project.Name, data.Runtime.Name, data.Database.Name, data.OwnerEmail)
+	cmdString := fmt.Sprintf("/usr/local/bin/setup-project.sh %s %s %s %s", data.Client.Name, data.Project.Name, data.Runtime.Name, data.Database.Name)
 	ss.Run(cmdString)
 	return stdoutBuf.String()
 }

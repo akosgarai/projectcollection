@@ -1,6 +1,5 @@
 create_table("applications") {
 	t.Column("id", "uuid", {primary: true})
-	t.Column("owner_email", "string", {})
 	t.Column("project_id", "uuid", {})
 	t.Column("client_id", "uuid", {})
 	t.Column("runtime_id", "uuid", {})
