@@ -10,6 +10,11 @@
             <a class="nav-link <%= activeClass(activeMenu, "applications/") %>" aria-current="page" href="<%= applicationsPath() %>">Applications</a>
           </li>
         <% } %>
+        <%= if (current_user.HasPermissionFor("alias.view")) { %>
+          <li class="nav-item">
+            <a class="nav-link <%= activeClass(activeMenu, "aliases/") %>" aria-current="page" href="<%= aliasesPath() %>">Aliases</a>
+          </li>
+        <% } %>
         <%= if (current_user.HasPermissionFor("host.view")) { %>
           <li class="nav-item">
             <a class="nav-link <%= activeClass(activeMenu, "hosts/") %>" aria-current="page" href="<%= hostsPath() %>">Hosts</a>

@@ -103,6 +103,7 @@ func App() *buffalo.App {
 		app.GET("/job_applications/{job_application_id}", JobApplicationsResource{}.Show)
 		app.DELETE("/job_applications/{job_application_id}", JobApplicationsResource{}.Destroy)
 
+		app.Resource("/aliases", AliasesResource{})
 		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
 	})
 

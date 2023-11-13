@@ -1,0 +1,6 @@
+- id: "alias.created.success"
+  translation: "Alias was successfully created."
+- id: "alias.updated.success"
+  translation: "Alias was successfully updated."
+- id: "alias.destroyed.success"
+  translation: "Alias was successfully destroyed."
