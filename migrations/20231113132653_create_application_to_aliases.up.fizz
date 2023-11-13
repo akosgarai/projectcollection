@@ -1,0 +1,9 @@
+create_table("application_to_aliases") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("application_id", "uuid", {})
+	t.Column("alias_id", "uuid", {})
+	t.DisableTimestamps()
+	t.ForeignKey("application_id", {"applications": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("alias_id", {"aliases": ["id"]}, {"on_delete": "cascade"})
+}
+add_index("application_to_aliases", "alias_id", {"unique": true})
