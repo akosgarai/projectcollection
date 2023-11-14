@@ -25,6 +25,8 @@ type Application struct {
 	Environment   *Environment         `json:"environment" belongs_to:"environment"`
 	Aliases       ApplicationToAliases `json:"aliases" has_many:"application_to_aliases"`
 	NewAliases    []uuid.UUID          `json:"new_aliases" db:"-"` // used to update the aliases
+	Repository    string               `json:"repository" db:"repository"`
+	Branch        string               `json:"branch" db:"branch"`
 	CreatedAt     time.Time            `json:"created_at" db:"created_at"`
 	UpdatedAt     time.Time            `json:"updated_at" db:"updated_at"`
 }
@@ -53,6 +55,8 @@ func (a *Application) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.UUIDIsPresent{Field: a.RuntimeID, Name: "RuntimeID"},
 		&validators.UUIDIsPresent{Field: a.DatabaseID, Name: "DatabaseID"},
 		&validators.UUIDIsPresent{Field: a.EnvironmentID, Name: "EnvironmentID"},
+		&validators.StringIsPresent{Field: a.Repository, Name: "Repository"},
+		&validators.StringIsPresent{Field: a.Branch, Name: "Branch"},
 	), nil
 }
 

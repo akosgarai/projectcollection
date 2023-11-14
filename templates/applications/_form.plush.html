@@ -4,4 +4,6 @@
 <%= f.SelectTag("DatabaseID", {options: databases, "label": "Database", value: application.DatabaseID}) %>
 <%= f.SelectTag("EnvironmentID", {options: environments, "label": "Environment", value: application.EnvironmentID}) %>
 <%= f.SelectTag("NewAliases", {options: aliases, "label": "Aliases", multiple: true, value: application.Aliases}) %>
+<%= f.InputTag("Repository") %>
+<%= f.InputTag("Branch") %>
 <button class="btn btn-success" role="submit">Save</button>

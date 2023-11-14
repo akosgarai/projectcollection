@@ -21,6 +21,8 @@ type application struct {
 	RuntimeID     uuid.UUID `json:"runtime_id" db:"runtime_id"`
 	DatabaseID    uuid.UUID `json:"database_id" db:"database_id"`
 	EnvironmentID uuid.UUID `json:"environment_id" db:"environment_id"`
+	Repository    string    `json:"repository" db:"repository"`
+	Branch        string    `json:"branch" db:"branch"`
 	CreatedAt     time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at" db:"updated_at"`
 }
@@ -65,6 +67,8 @@ var _ = Namespace("processor", func() {
 				Database:    &dbtype,
 				Runtime:     &runtime,
 				Environment: &environment,
+				Repository:  newApp.Repository,
+				Branch:      newApp.Branch,
 			}
 
 			response := ""
@@ -111,7 +115,7 @@ func executeServerCommand(host *models.Host, data *models.Application) string {
 	// Creating the buffer which will hold the remotly executed command's output.
 	var stdoutBuf bytes.Buffer
 	ss.Stdout = &stdoutBuf
-	cmdString := fmt.Sprintf("/usr/local/bin/setup-project.sh %s %s %s %s", data.Client.Name, data.Project.Name, data.Runtime.Name, data.Database.Name)
+	cmdString := fmt.Sprintf("/usr/local/bin/setup-project.sh %s %s %s %s \"%s\"", data.Client.Name, data.Project.Name, data.Runtime.Name, data.Database.Name, data.Repository+" / "+data.Branch)
 	ss.Run(cmdString)
 	return stdoutBuf.String()
 }

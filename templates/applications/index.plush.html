@@ -17,6 +17,7 @@
       <th>Runtime</th>
       <th>Database</th>
       <th>Environment</th>
+      <th>Codebase</th>
       <th>Aliases</th>
       <th>&nbsp;</th>
     </thead>
@@ -28,6 +29,7 @@
           <td class="align-middle"><%= application.Runtime.Name %></td>
           <td class="align-middle"><%= application.Database.Name %></td>
           <td class="align-middle"><%= application.Environment.Name %></td>
+          <td class="align-middle"><%= application.Repository %> / <%= application.Branch %></td>
           <td class="align-middle">
             <ul>
               <%= for (alias) in application.Aliases { %>
