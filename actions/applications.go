@@ -319,6 +319,13 @@ func (v ApplicationsResource) Destroy(c buffalo.Context) error {
 		return c.Error(http.StatusNotFound, err)
 	}
 
+	// Create an entry to the job_application table
+	jobApplication := &models.JobApplication{
+		Type:       "destroy",
+		OrigParams: nulls.NewString(application.String()),
+	}
+	tx.Create(jobApplication)
+
 	if err := tx.Destroy(application); err != nil {
 		return err
 	}
