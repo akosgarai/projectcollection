@@ -2,7 +2,7 @@ package grifts
 
 import (
 	"bytes"
-	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"projectcollection/models"
@@ -37,39 +37,24 @@ var _ = Namespace("processor", func() {
 		for _, job := range nextJobs {
 			// setup the execution time
 			job.ProcessedAt = nulls.NewTime(time.Now())
-			// execute the job.
-			newApp := &application{}
-			err := json.Unmarshal([]byte(job.NewParams.String), &newApp)
-			if err != nil {
+			var app *models.Application
+			var appErr error
+			switch job.Type {
+			case "create":
+				app, appErr = job.NewParamApplication()
+			case "destroy":
+				app, appErr = job.OrigParamApplication()
+			default:
+				appErr = errors.New("unknown job type")
+			}
+			if appErr != nil {
 				// TODO: log error
-				job.Response = nulls.NewString("Failed to unmarshal the job parameters. " + err.Error() + " " + job.NewParams.String)
+				job.Response = nulls.NewString(appErr.Error())
 				models.DB.Update(&job)
 				continue
 			}
-			// execute the create project job.
-			project := models.Project{}
-			models.DB.Where("id = ?", newApp.ProjectID).First(&project)
-			client := models.Client{}
-			models.DB.Where("id = ?", newApp.ClientID).First(&client)
-			dbtype := models.Dbtype{}
-			models.DB.Where("id = ?", newApp.DatabaseID).First(&dbtype)
-			runtime := models.Runtime{}
-			models.DB.Where("id = ?", newApp.RuntimeID).First(&runtime)
-			environment := models.Environment{}
-			models.DB.Where("id = ?", newApp.EnvironmentID).First(&environment)
-
 			hosts := models.Hosts{}
-			models.DB.Where("environment_id = ?", environment.ID).All(&hosts)
-			// create an application struct to pass to the server.
-			app := &models.Application{
-				Project:     &project,
-				Client:      &client,
-				Database:    &dbtype,
-				Runtime:     &runtime,
-				Environment: &environment,
-				Repository:  newApp.Repository,
-				Branch:      newApp.Branch,
-			}
+			models.DB.Where("environment_id = ?", app.Environment.ID).All(&hosts)
 
 			response := ""
 			for _, host := range hosts {
@@ -125,7 +110,7 @@ func executeServerCommand(host *models.Host, data *models.Application, command s
 			data.Database.Name,
 			data.Repository+" / "+data.Branch)
 	case "destroy":
-		commandString = fmt.Sprintf("/usr/local/bin/remove-project.sh %s %s",
+		commandString = fmt.Sprintf("/usr/local/bin/destroy-project.sh %s %s",
 			data.Client.Name,
 			data.Project.Name)
 	default:
