@@ -162,6 +162,7 @@ func (v ApplicationsResource) Create(c buffalo.Context) error {
 	}
 	// Create an entry to the job_application table
 	jobApplication := &models.JobApplication{
+		Type:      "create",
 		NewParams: nulls.NewString(application.String()),
 	}
 	tx.Create(jobApplication)

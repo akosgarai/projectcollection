@@ -13,6 +13,7 @@ import (
 // JobApplication is used by pop to map your job_applications database table to your go code.
 type JobApplication struct {
 	ID          uuid.UUID    `json:"id" db:"id"`
+	Type        string       `json:"type" db:"type"`
 	NewParams   nulls.String `json:"new_params" db:"new_params"`
 	OrigParams  nulls.String `json:"orig_params" db:"orig_params"`
 	ProcessedAt nulls.Time   `json:"processed_at" db:"processed_at"`
