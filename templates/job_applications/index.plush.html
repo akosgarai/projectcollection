@@ -6,6 +6,7 @@
   <table class="table table-hover table-bordered">
     <thead class="thead-light">
       <th>Type</th>
+      <th>Application</th>
       <th>Processed At</th>
       <th>Response</th>
       <th>&nbsp;</th>
@@ -14,6 +15,7 @@
       <%= for (jobApplication) in jobApplications { %>
         <tr>
           <td class="align-middle"><%= jobApplication.Type %></td>
+          <td class="align-middle"><%= jobApplication.Summary() %></td>
           <td class="align-middle"><%= jobApplication.ProcessedAt %></td>
           <td class="align-middle"><%= jobApplication.Response %></td>
           <td>

@@ -90,6 +90,21 @@ func (j *JobApplication) OrigParamApplication() (*Application, error) {
 	return j.targetAppApplication(targetApp)
 }
 
+// Summary returns a summary of the job.
+// If the type is create, then it returns the new application.Client.Name / application.Project.Name
+// If the type is destroy, then it returns the orig application.Client.Name / application.Project.Name
+func (j *JobApplication) Summary() string {
+	if j.Type == "create" {
+		app, _ := j.NewParamApplication()
+		return app.Client.Name + " / " + app.Project.Name
+	}
+	if j.Type == "destroy" {
+		app, _ := j.OrigParamApplication()
+		return app.Client.Name + " / " + app.Project.Name
+	}
+	return ""
+}
+
 // targetAppApplication returns the application struct frome the given application.
 func (j *JobApplication) targetAppApplication(targetApp *application) (*Application, error) {
 	// execute the create project job.
