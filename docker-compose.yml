@@ -20,6 +20,7 @@ services:
     volumes:
       - ./environments/staging:/usr/local/apache2/htdocs/
       - ./bin/setup-project.sh:/usr/local/bin/setup-project.sh
+      - ./bin/destroy-project.sh:/usr/local/bin/destroy-project.sh
     ports:
       - 9091:80
     networks:
@@ -31,6 +32,7 @@ services:
     volumes:
       - ./environments/production:/usr/local/apache2/htdocs/
       - ./bin/setup-project.sh:/usr/local/bin/setup-project.sh
+      - ./bin/destroy-project.sh:/usr/local/bin/destroy-project.sh
     ports:
       - 9096:80
     networks:
