@@ -73,7 +73,7 @@ var _ = Namespace("processor", func() {
 
 			response := ""
 			for _, host := range hosts {
-				response += executeServerCommand(&host, app)
+				response += executeServerCommand(&host, app, job.Type)
 			}
 			job.Response = nulls.NewString(response)
 			models.DB.Update(&job)
@@ -83,7 +83,7 @@ var _ = Namespace("processor", func() {
 
 })
 
-func executeServerCommand(host *models.Host, data *models.Application) string {
+func executeServerCommand(host *models.Host, data *models.Application, command string) string {
 	key, err := ioutil.ReadFile(host.SSHKey)
 	if err != nil {
 		return fmt.Sprintf("unable to read private key: %v - %v", err, host)
@@ -114,8 +114,24 @@ func executeServerCommand(host *models.Host, data *models.Application) string {
 	defer ss.Close()
 	// Creating the buffer which will hold the remotly executed command's output.
 	var stdoutBuf bytes.Buffer
+	var commandString string
 	ss.Stdout = &stdoutBuf
-	cmdString := fmt.Sprintf("/usr/local/bin/setup-project.sh %s %s %s %s \"%s\"", data.Client.Name, data.Project.Name, data.Runtime.Name, data.Database.Name, data.Repository+" / "+data.Branch)
-	ss.Run(cmdString)
+	switch command {
+	case "create":
+		commandString = fmt.Sprintf("/usr/local/bin/setup-project.sh %s %s %s %s \"%s\"",
+			data.Client.Name,
+			data.Project.Name,
+			data.Runtime.Name,
+			data.Database.Name,
+			data.Repository+" / "+data.Branch)
+	case "destroy":
+		commandString = fmt.Sprintf("/usr/local/bin/remove-project.sh %s %s",
+			data.Client.Name,
+			data.Project.Name)
+	default:
+		return "Unknown command"
+	}
+
+	ss.Run(commandString)
 	return stdoutBuf.String()
 }
