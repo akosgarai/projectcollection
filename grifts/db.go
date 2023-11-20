@@ -179,7 +179,7 @@ var _ = grift.Namespace("db", func() {
 		}
 		// assign the resources to the roles
 		roleResources := map[string][]string{
-			"sysadmin":  {"dbtype.view", "dbtype.create", "dbtype.edit", "dbtype.delete", "runtime.view", "runtime.create", "runtime.edit", "runtime.delete", "environment.view", "environment.create", "environment.edit", "environment.delete", "host.view", "host.create", "host.edit", "host.delete", "client.view", "client.create", "client.edit", "client.delete", "project.view", "project.create", "project.edit", "project.delete", "application.view", "application.create", "application.edit", "application.delete", "alias.view", "alias.create", "alias.edit", "alias.delete"},
+			"sysadmin":  {"dbtype.view", "dbtype.create", "dbtype.edit", "dbtype.delete", "runtime.view", "runtime.create", "runtime.edit", "runtime.delete", "environment.view", "environment.create", "environment.edit", "environment.delete", "host.view", "host.create", "host.edit", "host.delete", "client.view", "client.create", "client.edit", "client.delete", "project.view", "project.create", "project.edit", "project.delete", "application.view", "application.create", "application.delete", "alias.view", "alias.create", "alias.edit", "alias.delete"},
 			"developer": {"dbtype.view", "runtime.view", "environment.view", "host.view", "client.view", "project.view", "application.view", "alias.view"},
 			"user":      {"application.view", "alias.view"},
 		}
