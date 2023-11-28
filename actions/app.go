@@ -6,6 +6,7 @@ import (
 
 	"projectcollection/locales"
 	"projectcollection/models"
+	"projectcollection/notification"
 	"projectcollection/public"
 
 	"github.com/gobuffalo/buffalo"
@@ -23,9 +24,10 @@ import (
 var ENV = envy.Get("GO_ENV", "development")
 
 var (
-	app     *buffalo.App
-	appOnce sync.Once
-	T       *i18n.Translator
+	app             *buffalo.App
+	appOnce         sync.Once
+	T               *i18n.Translator
+	NotificationHub *notification.Hub
 )
 
 // App is where all routes and middleware for buffalo
@@ -48,6 +50,10 @@ func App() *buffalo.App {
 			SessionName: "_projectcollection_session",
 		})
 
+		NotificationHub = notification.NewHub()
+		// Start the notification hub
+		go NotificationHub.Run()
+
 		// Automatically redirect to SSL
 		app.Use(forceSSL())
 
@@ -69,6 +75,8 @@ func App() *buffalo.App {
 
 		// setup the active menu
 		app.Use(activeMenu)
+		// add the notification hub to the context
+		app.Use(notificationHub)
 
 		// NOTE: this block should go before any resources
 		// that need to be protected by buffalo-goth!
@@ -102,6 +110,10 @@ func App() *buffalo.App {
 		app.GET("/job_applications", JobApplicationsResource{}.List)
 		app.GET("/job_applications/{job_application_id}", JobApplicationsResource{}.Show)
 		app.DELETE("/job_applications/{job_application_id}", JobApplicationsResource{}.Destroy)
+		app.GET("/ws", JobApplicationsResource{}.Websocket)
+		app.GET("/wsbc", JobApplicationsResource{}.WebsocketBroadcast)
+		// the application job has to be able to broadcast to the websocket without authorization
+		app.Middleware.Skip(Authorize, JobApplicationsResource{}.WebsocketBroadcast)
 
 		app.Resource("/aliases", AliasesResource{})
 		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
@@ -146,6 +158,14 @@ func activeMenu(next buffalo.Handler) buffalo.Handler {
 			}
 			return ""
 		})
+		return next(c)
+	}
+}
+
+// notificationHub adds the notification hub to the context
+func notificationHub(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		c.Set("hub", NotificationHub)
 		return next(c)
 	}
 }
