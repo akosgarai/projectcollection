@@ -5,13 +5,19 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"projectcollection/models"
 	"time"
 
 	. "github.com/gobuffalo/grift/grift"
 	"github.com/gobuffalo/nulls"
 	"github.com/gofrs/uuid"
+	"github.com/gorilla/websocket"
 	"golang.org/x/crypto/ssh"
+)
+
+const (
+	wsAddress = "localhost:3000"
 )
 
 type application struct {
@@ -34,6 +40,15 @@ var _ = Namespace("processor", func() {
 		// Read the job_application table for new entries (where the processed_at is null)
 		nextJobs := models.JobApplications{}
 		models.DB.Where("processed_at is null").All(&nextJobs)
+		// create a web socket connection to the client
+		u := url.URL{Scheme: "ws", Host: wsAddress, Path: "/wsbc"}
+		conn, _, errWebsocket := websocket.DefaultDialer.Dial(u.String(), nil)
+		if errWebsocket != nil {
+			// Log error
+			fmt.Printf("application job - websocket connection error: %s\n", errWebsocket.Error())
+		}
+		defer conn.Close()
+
 		for _, job := range nextJobs {
 			// setup the execution time
 			job.ProcessedAt = nulls.NewTime(time.Now())
@@ -51,6 +66,12 @@ var _ = Namespace("processor", func() {
 				// TODO: log error
 				job.Response = nulls.NewString(appErr.Error())
 				models.DB.Update(&job)
+				if errWebsocket == nil {
+					err := conn.WriteMessage(websocket.TextMessage, []byte(job.String()))
+					if err != nil {
+						fmt.Printf("application job - websocket write error: %s\n", err.Error())
+					}
+				}
 				continue
 			}
 			hosts := models.Hosts{}
@@ -62,6 +83,13 @@ var _ = Namespace("processor", func() {
 			}
 			job.Response = nulls.NewString(response)
 			models.DB.Update(&job)
+			jobMsg := job.String()
+			if errWebsocket == nil {
+				err := conn.WriteMessage(websocket.TextMessage, []byte(jobMsg))
+				if err != nil {
+					fmt.Printf("application job - websocket write error: %s\n", err.Error())
+				}
+			}
 		}
 		return nil
 	})
