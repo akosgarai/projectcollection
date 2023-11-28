@@ -13,11 +13,11 @@
     </thead>
     <tbody>
       <%= for (jobApplication) in jobApplications { %>
-        <tr>
+        <tr data-job-id="<%= jobApplication.ID %>">
           <td class="align-middle"><%= jobApplication.Type %></td>
           <td class="align-middle"><%= jobApplication.Summary() %></td>
-          <td class="align-middle"><%= jobApplication.ProcessedAt %></td>
-          <td class="align-middle"><%= jobApplication.Response %></td>
+          <td class="align-middle processed-at"><%= jobApplication.ProcessedAt %></td>
+          <td class="align-middle response"><%= jobApplication.Response %></td>
           <td>
             <div class="float-end">
               <%= linkTo(jobApplicationPath({ job_application_id: jobApplication.ID }), {class: "btn btn-info", body: "View"}) %>
@@ -33,3 +33,27 @@
 <div class="text-center">
   <%= paginator(pagination) %>
 </div>
+
+<script>
+(function() {
+    if (window["WebSocket"]) {
+        conn = new WebSocket("ws://" + document.location.host + "/ws");
+        conn.onclose = function (evt) {
+            console.log('close', evt.data);
+        };
+        conn.onmessage = function (evt) {
+            const data = JSON.parse(evt.data);
+            const jobId = data.id;
+            const processedAt = data.processed_at;
+            const response = data.response;
+            const row = document.querySelector(`[data-job-id="${jobId}"]`);
+            if (row) {
+                row.querySelector('.processed-at').innerHTML = processedAt;
+                row.querySelector('.response').innerHTML = response;
+            }
+        };
+    } else {
+        console.log("Your browser does not support WebSockets.");
+    }
+})();
+</script>
