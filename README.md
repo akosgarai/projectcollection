@@ -91,3 +91,8 @@ job_application table:
 ```console
 buffalo generate resource host name ip environment_id:uuid ssh_user ssh_port:int ssh_key
 ```
+
+## Users, Roles, Auth
+
+The basics of the users, roles and authentication has been implemented based on the [documentation](https://gobuffalo.io/documentation/guides/auth/) and this [post](https://zoharpeled.wordpress.com/2020/11/07/role-based-security-database-design/).
+
