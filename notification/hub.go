@@ -33,19 +33,28 @@ func (h *Hub) Run() {
 		case client := <-h.register:
 			h.clients[client] = true
 		case client := <-h.unregister:
-			if _, ok := h.clients[client]; ok {
-				delete(h.clients, client)
-				close(client.send)
-			}
+			h.deleteClient(client)
 		case message := <-h.broadcast:
-			for client := range h.clients {
-				select {
-				case client.send <- message:
-				default:
-					close(client.send)
-					delete(h.clients, client)
-				}
-			}
+			h.Broadcast(message)
 		}
+	}
+}
+
+// Broadcast broadcasts a message to all clients
+func (h *Hub) Broadcast(message []byte) {
+	for client := range h.clients {
+		select {
+		case client.send <- message:
+		default:
+			h.deleteClient(client)
+		}
+	}
+}
+
+// deleteClient deletes a client from the hub
+func (h *Hub) deleteClient(client *Client) {
+	if _, ok := h.clients[client]; ok {
+		delete(h.clients, client)
+		close(client.send)
 	}
 }

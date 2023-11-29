@@ -46,11 +46,14 @@
             const jobId = data.id;
             const processedAt = data.processed_at;
             const response = data.response;
-            const row = document.querySelector(`[data-job-id="${jobId}"]`);
-            if (row) {
-                row.querySelector('.processed-at').innerHTML = processedAt;
-                row.querySelector('.response').innerHTML = response;
+            let row = document.querySelector(`[data-job-id="${jobId}"]`);
+            if (!row) {
+                // close connection and reload page
+                conn.close();
+                location.reload();
             }
+            row.querySelector('.processed-at').innerHTML = processedAt;
+            row.querySelector('.response').innerHTML = response;
         };
     } else {
         console.log("Your browser does not support WebSockets.");
