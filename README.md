@@ -26,27 +26,27 @@ If you point your browser to [http://127.0.0.1:3000](http://127.0.0.1:3000) you 
 
 ### Runtimes
 
-Runtime [http://127.0.0.1:3000/runtimes/](list page). Click to "Create New Runtime" button. Example values: PHP71FPM, PHP74FPM, PHP81FPM, noPHP
+Runtime [list page](http://127.0.0.1:3000/runtimes/). Click to "Create New Runtime" button. Example values: PHP71FPM, PHP74FPM, PHP81FPM, noPHP
 
 ### Dbtypes
 
-Dbytpe [http://127.0.0.1:3000/dbtypes/](list page). Click to "Create New Dbtype" button. Example values: no, mysql
+Dbytpe [list page](http://127.0.0.1:3000/dbtypes/). Click to "Create New Dbtype" button. Example values: no, mysql
 
 ### Environments
 
-Environment [http://127.0.0.1:3000/environments/](list page). Click to "Create New Environment" button. Example values: staging, production
+Environment [list page](http://127.0.0.1:3000/environments/). Click to "Create New Environment" button. Example values: staging, production
 
 ### Clients
 
-Client [http://127.0.0.1:3000/clients/](list page). Click to "Create New Client" button. Example values: test-client
+Client [list page](http://127.0.0.1:3000/clients/). Click to "Create New Client" button. Example values: test-client
 
 ### Projects
 
-Project [http://127.0.0.1:3000/projects/](list page). Click to "Create New Project" button. Example values: test-project
+Project [list page](http://127.0.0.1:3000/projects/). Click to "Create New Project" button. Example values: test-project
 
 ### Hosts
 
-Host [http://127.0.0.1:3000/hosts/](list page). Click to "Create New Host" button.
+Host [list page](http://127.0.0.1:3000/hosts/). Click to "Create New Host" button.
 
 Example values for a staging environment:
 - Name: server-staging
@@ -66,7 +66,7 @@ Example values for a production environment:
 
 ### Application
 
-Application [http://127.0.0.1:3000/applications/](list page). Click to "Create New Application" button.
+Application [list page](http://127.0.0.1:3000/applications/). Click to "Create New Application" button.
 
 Example values for a staging application:
 - Owner email: email@address.com (It does not send email yet, this value is only stored in the applications table)
