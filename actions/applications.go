@@ -50,7 +50,7 @@ func (v ApplicationsResource) List(c buffalo.Context) error {
 	q := tx.PaginateFromParams(c.Params())
 
 	// Retrieve all Applications from the DB
-	if err := q.Eager("Project").Eager("Client").Eager("Runtime").Eager("Database").Eager("Environment").Eager("Aliases.Alias").All(applications); err != nil {
+	if err := q.Eager("Project").Eager("Client").Eager("Pool").Eager("Runtime").Eager("Database").Eager("Environment").Eager("Aliases.Alias").All(applications); err != nil {
 		return err
 	}
 
@@ -84,7 +84,7 @@ func (v ApplicationsResource) Show(c buffalo.Context) error {
 	application := &models.Application{}
 
 	// To find the Application the parameter application_id is used.
-	if err := tx.Eager("Project").Eager("Client").Eager("Runtime").Eager("Database").Eager("Environment").Eager("Aliases.Alias").Find(application, c.Param("application_id")); err != nil {
+	if err := tx.Eager("Project").Eager("Client").Eager("Pool").Eager("Runtime").Eager("Database").Eager("Environment").Eager("Aliases.Alias").Find(application, c.Param("application_id")); err != nil {
 		return c.Error(http.StatusNotFound, err)
 	}
 
@@ -367,6 +367,10 @@ func (v ApplicationsResource) setSelectLists(c buffalo.Context) error {
 	runtimes := models.Runtimes{}
 	tx.All(&runtimes)
 	c.Set("runtimes", runtimes)
+
+	pools := models.Pools{}
+	tx.All(&pools)
+	c.Set("pools", pools)
 
 	databases := models.Dbtypes{}
 	tx.All(&databases)

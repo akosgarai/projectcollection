@@ -40,6 +40,20 @@ var _ = grift.Namespace("db", func() {
 				models.DB.Create(&runtime)
 			}
 		}
+		// insert pools: www, api, cron
+		poolNames := []string{"nopool", "www", "api", "cron"}
+		for _, name := range poolNames {
+			pool := models.Pool{}
+			// if the pool doesn't exist, create it
+			models.DB.Where("name = ?", name).First(&pool)
+			if pool.Name == "" {
+				pool = models.Pool{
+					Name: name,
+					ID:   uuid.Must(uuid.NewV4()),
+				}
+				models.DB.Create(&pool)
+			}
+		}
 		// insert the environments
 		stagingEnv := models.Environment{}
 		productionEnv := models.Environment{}
@@ -162,7 +176,7 @@ var _ = grift.Namespace("db", func() {
 			roles[name] = role
 		}
 		// create the resources
-		resourceNames := []string{"dbtype", "runtime", "environment", "host", "client", "project", "application", "alias"}
+		resourceNames := []string{"dbtype", "runtime", "environment", "host", "client", "project", "application", "alias", "pool"}
 		actionNames := []string{"view", "create", "edit", "delete"}
 		for _, resourceName := range resourceNames {
 			for _, actionName := range actionNames {
@@ -179,8 +193,17 @@ var _ = grift.Namespace("db", func() {
 		}
 		// assign the resources to the roles
 		roleResources := map[string][]string{
-			"sysadmin":  {"dbtype.view", "dbtype.create", "dbtype.edit", "dbtype.delete", "runtime.view", "runtime.create", "runtime.edit", "runtime.delete", "environment.view", "environment.create", "environment.edit", "environment.delete", "host.view", "host.create", "host.edit", "host.delete", "client.view", "client.create", "client.edit", "client.delete", "project.view", "project.create", "project.edit", "project.delete", "application.view", "application.create", "application.delete", "alias.view", "alias.create", "alias.edit", "alias.delete"},
-			"developer": {"dbtype.view", "runtime.view", "environment.view", "host.view", "client.view", "project.view", "application.view", "alias.view"},
+			"sysadmin": {
+				"dbtype.view", "dbtype.create", "dbtype.edit", "dbtype.delete",
+				"runtime.view", "runtime.create", "runtime.edit", "runtime.delete",
+				"environment.view", "environment.create", "environment.edit", "environment.delete",
+				"host.view", "host.create", "host.edit", "host.delete",
+				"client.view", "client.create", "client.edit", "client.delete",
+				"project.view", "project.create", "project.edit", "project.delete",
+				"application.view", "application.create", "application.delete",
+				"alias.view", "alias.create", "alias.edit", "alias.delete",
+				"pool.view", "pool.create", "pool.edit", "pool.delete"},
+			"developer": {"dbtype.view", "runtime.view", "environment.view", "host.view", "client.view", "project.view", "application.view", "alias.view", "pool.view"},
 			"user":      {"application.view", "alias.view"},
 		}
 		for roleName, resourceNames := range roleResources {

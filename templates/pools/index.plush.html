@@ -1,0 +1,39 @@
+<div class="py-4 mb-2">
+  <h3 class="d-inline-block">Pools</h3>
+  <%= if (current_user.HasPermissionFor("pool.create")) { %>
+    <div class="float-end">
+      <%= linkTo(newPoolsPath(), {class: "btn btn-primary"}) { %>
+        Create New Pool
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<table class="table table-hover table-bordered">
+  <thead class="thead-light">
+    <th>Name</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (pool) in pools { %>
+      <tr>
+        <td class="align-middle"><%= pool.Name %></td>
+        <td>
+          <div class="float-end">
+            <%= linkTo(poolPath({ pool_id: pool.ID }), {class: "btn btn-info", body: "View"}) %>
+            <%= if (current_user.HasPermissionFor("pool.edit")) { %>
+              <%= linkTo(editPoolPath({ pool_id: pool.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+            <% } %>
+            <%= if (current_user.HasPermissionFor("pool.delete")) { %>
+              <%= linkTo(poolPath({ pool_id: pool.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+            <% } %>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= paginator(pagination) %>
+</div>

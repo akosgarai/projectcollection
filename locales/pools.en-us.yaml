@@ -1,0 +1,6 @@
+- id: "pool.created.success"
+  translation: "Pool was successfully created."
+- id: "pool.updated.success"
+  translation: "Pool was successfully updated."
+- id: "pool.destroyed.success"
+  translation: "Pool was successfully destroyed."

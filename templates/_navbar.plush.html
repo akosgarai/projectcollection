@@ -30,6 +30,11 @@
             <a class="nav-link <%= activeClass(activeMenu, "runtimes/") %>" aria-current="page" href="<%= runtimesPath() %>">Runtimes</a>
           </li>
         <% } %>
+        <%= if (current_user.HasPermissionFor("pool.view")) { %>
+          <li class="nav-item">
+            <a class="nav-link <%= activeClass(activeMenu, "pools/") %>" aria-current="page" href="<%= poolsPath() %>">Pools</a>
+          </li>
+        <% } %>
         <%= if (current_user.HasPermissionFor("dbtype.view")) { %>
           <li class="nav-item">
             <a class="nav-link <%= activeClass(activeMenu, "dbtypes/") %>" aria-current="page" href="<%= dbtypesPath() %>">Databases</a>

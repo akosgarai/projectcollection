@@ -1,0 +1,6 @@
+create_table("pools") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("name", "string", {})
+	t.Timestamps()
+}
+add_index("pools", "name", {"unique": true})

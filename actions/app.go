@@ -116,6 +116,7 @@ func App() *buffalo.App {
 		app.Middleware.Skip(Authorize, JobApplicationsResource{}.WebsocketBroadcast)
 
 		app.Resource("/aliases", AliasesResource{})
+		app.Resource("/pools", PoolsResource{})
 		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
 	})
 

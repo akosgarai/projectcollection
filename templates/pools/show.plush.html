@@ -1,0 +1,28 @@
+<div class="py-4 mb-2">
+  <h3 class="d-inline-block">Pool Details</h3>
+
+  <div class="float-end">
+    <%= linkTo(poolsPath(), {class: "btn btn-info"}) { %>
+      Back to all Pools
+    <% } %>
+    <%= if (current_user.HasPermissionFor("pool.edit")) { %>
+      <%= linkTo(editPoolPath({ pool_id: pool.ID }), {class: "btn btn-warning", body: "Edit"}) %>
+    <% } %>
+    <%= if (current_user.HasPermissionFor("pool.delete")) { %>
+      <%= linkTo(poolPath({ pool_id: pool.ID }), {class: "btn btn-danger", "data-method": "DELETE", "data-confirm": "Are you sure?", body: "Destroy"}) %>
+    <% } %>
+  </div>
+</div>
+
+
+
+<ul class="list-group mb-2 ">
+
+
+  <li class="list-group-item pb-1">
+    <label class="small d-block">Name</label>
+    <p class="d-inline-block"><%= pool.Name %></p>
+  </li>
+
+
+</ul>

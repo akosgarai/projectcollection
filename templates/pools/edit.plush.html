@@ -1,0 +1,8 @@
+<div class="py-4 mb-2">
+  <h3 class="d-inline-block">Edit Pool</h3>
+</div>
+
+<%= formFor(pool, {action: poolPath({ pool_id: pool.ID }), method: "PUT"}) { %>
+  <%= partial("pools/form.html") %>
+  <%= linkTo(poolPath({ pool_id: pool.ID }), {class: "btn btn-warning", "data-confirm": "Are you sure?", body: "Cancel"}) %>
+<% } %>

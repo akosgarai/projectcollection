@@ -3,6 +3,7 @@ create_table("applications") {
 	t.Column("project_id", "uuid", {})
 	t.Column("client_id", "uuid", {})
 	t.Column("runtime_id", "uuid", {})
+	t.Column("pool_id", "uuid", {})
 	t.Column("database_id", "uuid", {})
 	t.Column("environment_id", "uuid", {})
 	t.Column("repository", "string", {})
@@ -11,6 +12,7 @@ create_table("applications") {
 	t.ForeignKey("project_id", {"projects": ["id"]}, {"on_delete": "cascade"})
 	t.ForeignKey("client_id", {"clients": ["id"]}, {"on_delete": "cascade"})
 	t.ForeignKey("runtime_id", {"runtimes": ["id"]}, {"on_delete": "cascade"})
+	t.ForeignKey("pool_id", {"pools": ["id"]}, {"on_delete": "cascade"})
 	t.ForeignKey("database_id", {"dbtypes": ["id"]}, {"on_delete": "cascade"})
 	t.ForeignKey("environment_id", {"environments": ["id"]}, {"on_delete": "cascade"})
 }

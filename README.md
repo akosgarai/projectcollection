@@ -64,15 +64,23 @@ Example values for a production environment:
 - SSH Port: 2222 (ssh port on the docker environment containers)
 - SSH Key: /root/.ssh/id_rsa (the name of the private key file. It is attached under the /root/.ssh directory in the application container.)
 
+### Aliases
+
+Aliases [list page](http://127.0.0.1:3000/aliases/). Click to "Create New Alias" button.
+
+### Pools
+
+Pools [list page](http://127.0.0.1:3000/pools/). Click to "Create New Pool" button.
+
 ### Application
 
 Application [list page](http://127.0.0.1:3000/applications/). Click to "Create New Application" button.
 
 Example values for a staging application:
-- Owner email: email@address.com (It does not send email yet, this value is only stored in the applications table)
 - Project: test-project (The first project option is selected by default)
 - Client: test-client (The first client option is selected by default)
 - Runtime: PHP71FPM (The first runtime option is selected by default)
+- Pool: For PHP runtimes. (The first pool option is selected by default)
 - Database: no (The first dbtype option is selected by default)
 - Environment: staging (The first environment option is selected by default)
 

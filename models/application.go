@@ -19,6 +19,8 @@ type Application struct {
 	Client        *Client              `json:"client" belongs_to:"client"`
 	RuntimeID     uuid.UUID            `json:"runtime_id" db:"runtime_id"`
 	Runtime       *Runtime             `json:"runtime" belongs_to:"runtime"`
+	PoolID        uuid.UUID            `json:"pool_id" db:"pool_id"`
+	Pool          *Pool                `json:"pool" belongs_to:"pool"`
 	DatabaseID    uuid.UUID            `json:"database_id" db:"database_id"`
 	Database      *Dbtype              `json:"database" belongs_to:"dbtype"`
 	EnvironmentID uuid.UUID            `json:"environment_id" db:"environment_id"`
@@ -53,6 +55,7 @@ func (a *Application) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.UUIDIsPresent{Field: a.ProjectID, Name: "ProjectID"},
 		&validators.UUIDIsPresent{Field: a.ClientID, Name: "ClientID"},
 		&validators.UUIDIsPresent{Field: a.RuntimeID, Name: "RuntimeID"},
+		&validators.UUIDIsPresent{Field: a.PoolID, Name: "PoolID"},
 		&validators.UUIDIsPresent{Field: a.DatabaseID, Name: "DatabaseID"},
 		&validators.UUIDIsPresent{Field: a.EnvironmentID, Name: "EnvironmentID"},
 		&validators.StringIsPresent{Field: a.Repository, Name: "Repository"},
